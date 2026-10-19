@@ -349,7 +349,7 @@ random_number = random.randint(1,100)
   
 - 定义：
 
-![image-20260508002124619](C:\Users\86182\AppData\Roaming\Typora\typora-user-images\image-20260508002124619.png)
+![definition of set](D:\codePython\plan\media\python基础\definition of set.png)
 
 - 方法：
   - 元组.count() ：统计某元素在元组中出现的次数
@@ -369,7 +369,7 @@ random_number = random.randint(1,100)
 - 组包（packing）：将多个值合并到一个容器（元组、列表）中，变量数量与容器元素个数一致，不然会报错
 - 解包（unpacking）：将容器（元组、列表）解开成独立的元素、分别赋值给多个变量
 
-![image-20260508010121010](C:\Users\86182\AppData\Roaming\Typora\typora-user-images\image-20260508010121010.png)
+![packing & unpacking](D:\codePython\plan\media\python基础\packing & unpacking.png)
 
 **说明**：在元组解包时，* 表示收集剩余的所有元素（列表），允许我们处理不确定数量的元素（生成列表，以便于可以进行进一步的处理）
 
