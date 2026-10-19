@@ -16,7 +16,7 @@ def fib_rec(n):
     elif n == 1:
         return 1
     else:
-        return fib_rec(n - 1) +fib_rec(n - 2)
+        return fib_rec(n - 1) + fib_rec(n - 2)
 
 
 num = input("请输入：")
