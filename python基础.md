@@ -349,7 +349,7 @@ random_number = random.randint(1,100)
   
 - 定义：
 
-![definition of set](D:\codePython\plan\media\python基础\definition of set.png)
+![definition of set](D:\Leo7\plan\media\python基础\definition of set.png)
 
 - 方法：
   - 元组.count() ：统计某元素在元组中出现的次数
@@ -369,7 +369,7 @@ random_number = random.randint(1,100)
 - 组包（packing）：将多个值合并到一个容器（元组、列表）中，变量数量与容器元素个数一致，不然会报错
 - 解包（unpacking）：将容器（元组、列表）解开成独立的元素、分别赋值给多个变量
 
-![packing & unpacking](D:\codePython\plan\media\python基础\packing & unpacking.png)
+![packing & unpacking](D:\Leo7\plan\media\python基础\packing & unpacking.png)
 
 **说明**：在元组解包时，* 表示收集剩余的所有元素（列表），允许我们处理不确定数量的元素（生成列表，以便于可以进行进一步的处理）
 
@@ -437,4 +437,189 @@ random_number = random.randint(1,100)
 - 字典是没有索引下标的，不能根据索引获取值，只能根据key获取value
 
 
+
+## 文件
+
+文件的基本操作，大概可以分成三个步骤：
+
+1. ​	打开文件
+2. ​	读写文件
+3. ​	关闭文件
+
+### 打开文件（open()打开函数）
+
+​	使用open()函数，可以打开一个已经存在的文件，或者创建一个新文件，语法如下：
+
+```python
+open(name,mode,encoding)
+
+#name：是要打开的目标文件名的字符串（可以包含文件所在的具体路径）
+#mode：设置打开文件的模式（访问模式）：只读、写入、追加等
+#encoding：编码格式（推荐使用UTF-8）
+```
+
+```python
+#示例代码：
+f = open('python.txt','r',encoding = "UTF-8")
+#encoding的顺序不是第三位，所以不能用位置参数，用关键字参数直接指定
+```
+
+mode常用的三种基础访问模式
+
+| 模式 |                             描述                             |
+| :--: | :----------------------------------------------------------: |
+|  r   | 以只读方式打开文件。文件的指针将会放在文件的开头。这是默认模式。如果文件**不存在，报错。** |
+|  w   | 打开一个文件只用于写入。如果该文件已存在则打开文件，并从开头开始编辑，原有内容会被删除。如果文件**不存在，创建新文件。** |
+|  a   | 打开一个文件用于追加，新的内容将会被写入到已有内容之后。如果该**文件不存在，创建新文件**进行写入。 |
+
+### 读操作相关方法
+
+```python
+read():
+文件对象.read(num)
+#num表示要从文件中读取的数据的长度（单位是字节），如果没有传入num，那么就表示读取文件中的所有的数据。
+
+readline():
+#readline一次读取一行内容
+readlines():
+#readlines可以按照行的方式把整个文件中的内容进行一次性读取，并且返回的是一个列表，其中每一行的数据为一个元素。
+
+f = open('python.txt')
+content = f.readlines()
+
+#['hello world\n', 'abcdefg\n', 'aaa\n', 'ccc']
+print(content)
+
+#for循环读取文件行
+#for line in f:
+#	print(f"每一行的数据是:{line}")
+
+#关闭文件
+f.close()
+```
+
+当对一个文件进行操作的时候，每次都是接着上次读取的位置后继续读取的
+
+
+
+### 写和追加操作相关方法
+
+```python
+#1.打开文件
+f = open('python.txt', 'w')    #写
+f1 = open('python.txt', 'a')   #追加
+
+#2.文件写入
+f.write('hello world')    #写权限会把文件删除重新写
+f1.write('nihaoya!')	  #追加只会在已有内容后面加上新的内容
+
+#3.内容刷新
+f.flush()
+```
+
+**注意：**
+
+- 直接调用write，内容并未真正写入文件，而是会积攒在程序的内存中，称之为缓冲区
+- 当调用flush的时候，内容会真正写入文件（close()方法内置了flush()功能）
+- 这样做是避免频繁的操作硬盘，导致效率下降（攒一堆，一次性写磁盘）
+
+
+
+### 关闭文件 （close()关闭文件）
+
+close() 关闭文件对象
+
+```python
+f = open("oython.txt", "r")
+f.close()
+#最后通过close，关闭文件对象，也就是关闭对文件的占用
+#如果不调用close，同时程序没有停止运行，那么这个文件将一直被python程序占用
+```
+
+
+
+### with open()语法
+
+```python
+with open("python.txt", "r") as f:
+    f.readlinse()
+
+#通过在with open的语句块中对文件进行操作
+#可以在操作完成后自动关闭close文件，避免遗忘掉close方法
+```
+
+
+
+### 汇总
+
+![image-20261022162332274](D:\Leo7\plan\media\python基础\image-20261022162332274.png)
+
+
+
+
+
+## 异常
+
+### 捕获常规异常
+
+语法：
+
+```python
+try:
+    可能发生错误的代码
+except:
+    如果出现异常执行的代码
+    
+#尝试以'r'模式打开文件，如果文件不存在，则以'w'方式打开 
+try:
+    f = open('linux.txt','r')
+except:
+    f = open('linux.txt', 'w')
+```
+
+
+
+### 捕获指定异常
+
+语法：如果尝试执行的代码异常类型和要捕获的异常类型不一致，则无法捕获异常。
+
+一般try下方只放一行尝试执行的代码。
+
+```python
+try: 
+    print(name)
+except NameError as e:
+    prin("出现了变量定义的异常")
+    print(e) #异常的名称
+```
+
+
+
+### 捕获多个异常
+
+当捕获多个异常时，可以把要捕获的异常类型的名字，放到except后，并使用元组的方式进行书写。
+
+```python
+try:
+	print(1/0)
+except(NameError,ZeroDivisionError):
+	print('ZeroDivision错误...')
+```
+
+
+
+### 捕获所有异常
+
+等同于捕获常规异常
+
+```python
+try:
+	尝试语句
+except Exception as e:
+	print("出现异常了")
+else:
+    print('没有出现异常')
+finally:  #无论是否有异常，finally后的语句是一定要执行的
+    f.close()
+```
 
