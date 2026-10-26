@@ -339,6 +339,14 @@ random_number = random.randint(1,100)
 
 
 
+#### re模块（正则表达式模块）
+
+`re` 是python内置模块，不需要pip安装，`import re ` 直接导入
+
+作用： 用正则表达式，最字符串做匹配、查找、替换、分割，适合处理文本
+
+
+
 ### 元组（tuple）
 
 - 介绍：元组是不可变的序列，类似于列表，但创建后不能修改
@@ -427,6 +435,22 @@ random_number = random.randint(1,100)
 
 - 字典支持for循环遍历
 - 通过keys(), value(), items() 进行循环遍历
+
+
+
+```python
+if word in dic:
+    dic[word] += 1
+else:
+    dic[word] = 1
+
+
+#可以替换成
+dic[word] = dic.get(word, 0) + 1
+
+```
+
+原理：`dict.get(key,默认值)`，key 不存在返回 0
 
 
 
@@ -560,7 +584,9 @@ with open("python.txt", "r") as f:
 
 ## 异常
 
-### 捕获常规异常
+### 捕获异常
+
+#### 捕获常规异常
 
 语法：
 
@@ -579,7 +605,7 @@ except:
 
 
 
-### 捕获指定异常
+#### 捕获指定异常
 
 语法：如果尝试执行的代码异常类型和要捕获的异常类型不一致，则无法捕获异常。
 
@@ -595,7 +621,7 @@ except NameError as e:
 
 
 
-### 捕获多个异常
+#### 捕获多个异常
 
 当捕获多个异常时，可以把要捕获的异常类型的名字，放到except后，并使用元组的方式进行书写。
 
@@ -608,7 +634,7 @@ except(NameError,ZeroDivisionError):
 
 
 
-### 捕获所有异常
+#### 捕获所有异常
 
 等同于捕获常规异常
 
@@ -622,4 +648,225 @@ else:
 finally:  #无论是否有异常，finally后的语句是一定要执行的
     f.close()
 ```
+
+
+
+### 异常的传递
+
+异常是具有传递性的
+
+```python
+def func01():
+    print("这是func01开始")
+    num = 1 / 0
+    print("这是func01结束")
+   
+def func02():
+    print("这是func02开始")
+    func01()
+    print("这是func02结束")
+    
+def main():
+	try:
+        func02()
+    except Exception as e:
+        print(e)
+```
+
+当**函数func01**中发生异常，并且没有捕获处理这个异常的时候，异常会传递到**函数func02**，当func02也没有捕获处理这个异常的时候，**main函数**会捕获这个异常，这就是**异常的传递性**
+
+**当所有的函数都没有捕获异常的时候，程序就会报错**
+
+
+
+
+
+## 模块
+
+python模块（Module），是一个python文件，以 .py 结尾。模块能定义函数，类和变量，模块里也能包含可执行的代码。
+
+
+
+**模块的作用**：python 中有很多各种不同的模块，每一个每块都可以帮助我们快速的实验一些功能，比如实现和时间相关的功能就可以使用time模块，我们可以惹味一个模块就是一个工具包，每一个工具包都有各种不同的工具供我们使用进而实现各种不同的功能。
+
+总结：模块就是一个python 文件，里面偶类、函数、变量等，我们可以拿过来使用（导入模块去使用）
+
+
+
+### 模块的导入方式
+
+模块在使用前需要先导入 导入的语法如下：
+
+```python
+[from 模块名] import [模块 | 类 | 变量 | 函数 | *] [as 别名]
+
+#常用的组合形式如：
+import 模块名
+from 模块名 import 类、变量、方法等
+from 模块名 import *
+import 模块名 as 别名
+from 模块名 import 功能名 as 别名
+```
+
+
+
+通过使用 import 导入 time 模块使用 sleep 功能
+
+```python
+import time
+time.sleep(5)
+```
+
+
+
+通过使用 from 导入 time 的 sleep 功能
+
+```python
+from time import sleep
+sleep(5)
+```
+
+
+
+使用 * 导入 time 模块的全部功能
+
+```python
+form time import *  # * 表示全部的意思
+sleep(5)
+```
+
+
+
+as 定义别名
+
+```python
+import time as t
+t.sleep(5)
+
+from time import time as sl
+sl(5)
+```
+
+
+
+**注意**：当导入不同模块的同名功能时，后导入的模块会把前一个覆盖掉
+
+
+
+### 自定义模块
+
+就是一个普通的python文件
+
+
+
+### `__main__` 变量
+
+当导入的模块有直接的函数调用时，在导入的时候，会自动进行函数的调用执行，所以要使用`__main__`变量。
+
+```python
+#my_module.py
+
+def test(a, b):
+	print(a + b)
+	
+if __name__ == '__main__':
+	test(1, 2)
+```
+
+```python
+#test_my_module.py
+
+from my_module import test
+#此时不会调用执行test
+```
+
+
+
+### `__all__` 变量
+
+如果一个模块文件中有`__all__` 变量，当使用`from xxx import * ` 导入时，只能导入这个列表中的元素
+
+```python
+#my_module.py
+
+__all__ = ['test_a']
+
+def test_a(a, b):
+    print(a + b)
+
+def test_b(a, b):
+    print(a - b)
+
+```
+
+```python
+#test_my_module.py
+
+from my_module import * #当my_module.py文件中有了__all__变量，此时 * 只能导入test_a
+test_a(1, 2)
+test_b(2, 1) #报错
+
+#但是可以单独导入test_b
+#from my_module import test_b
+#test_b(2, 1)  #可以
+```
+
+
+
+
+
+## 包
+
+### 什么是 python 包
+
+从物理上看，包就是一个文件夹，在该文件夹下包含了一个`__init.py__` 文件，该文件夹可用于包含多个模块文件
+
+从逻辑上看，包的本质依然是模块
+
+![image-20261026170354658](D:\Leo7\plan\media\python基础\image-20261026170354658.png)
+
+有`__init.py__` 文件就是包，没有就是普通文件夹
+
+
+
+### 导入包
+
+```python
+#方式一：
+import 包名.模块名
+包名.模块名.目标
+
+#方式二
+from 包名 import 模块名
+模块名.目标
+
+#方式三
+from 包名.模块名 import 方法目标
+目标
+
+```
+
+
+
+#### `__all__` 变量
+
+注意：
+
+必须在`__init__.py` 文件中添加`__all__` =[]，控制允许导入的模块列表
+
+`__all__` 针对的是 ` from ... import * ` 这种方式，对` import xxx` 这种方式是无效的
+
+
+
+### 安装第三方包
+
+```
+pip 第三方包  #默认国外网站
+```
+
+
+
+
+
+## 正则表达式
 
