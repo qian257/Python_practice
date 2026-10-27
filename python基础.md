@@ -462,6 +462,88 @@ dic[word] = dic.get(word, 0) + 1
 
 
 
+## 函数
+
+### 匿名函数
+
+没有名称的函数，需要通过lambda表达式来声明函数，可以简化简单函数的编写（单行表达式）
+
+```python
+#定义匿名函数
+lambda 参数列表 : 函数体
+
+lambda : print('---------------------------')
+lambda x, y : x + y
+```
+
+注意：
+
+- 函数逻辑比较简单（单行表达式）且只在一个地方使用时，可以考虑使用匿名函数，简化书写（通常作为高阶函数的参数使用）
+- 匿名函数中可以返回结果，也可以不返回结果。返回结果时，不需要写return，表达式的运行结果就是要返回的结果
+
+
+
+### sort()和sorted()
+
+- `list.sort()`：原地排序，直接修改原列表，返回值时`None`
+- `sorted(可迭代对象)`：生成新列表，原数据不变；可以给所有可迭代对象排序（列表、元组、字典items等）
+
+
+
+#### `list.sort()`方法
+
+特点：
+
+1. 只列表list能用，元组、字典不能调用`.sort()`
+2. 原地修改，不产生新内存
+3. 参数：`key` 、`reverse=True/False`
+
+
+
+```python
+data_list = ["c++", "c", "python", "jack", "php", "java", "go"]
+
+#按字符串排序
+data_list.sort()
+
+#按元素个数进行排序
+data_list.sort(key=lambda item : len(item))
+```
+
+
+
+#### `sorted()`方法
+
+sorted(可迭代对象、key=函数、reverse=布尔值)，作用：排序、返回一个新列表，不会改动原来的数据
+
+第一个参数：要排的数据。
+
+第二个参数：key=排序规则（接收一个函数）
+
+第三个参数：是否倒序
+
+```python
+#对学生成绩进行排序
+sorted_list = sorted (students.items (), key=lambda x:x [1], reverse=True)
+
+"""
+流程：
+sorted会循环把students里面每一个元素传给key的规则，元素叫x
+这里的每一个x时（”名字“， 分数）的元组
+x[1]就是取第二个值-->成绩
+sorted拿着这个返回值（成绩）去比较大小、排序
+"""
+
+```
+
+**三种写法对比：**
+
+1. `sorted(students)` → 遍历**keys**，排序【姓名】，返回姓名 list
+2. `sorted(students.values())` → 遍历**values**，只排序【成绩】，返回成绩 list
+3. `sorted(students.items())` → 遍历**(key,value) 元组**，排序【姓名 + 成绩整套数据】，返回元组列表
+
+
+
 ## 文件
 
 文件的基本操作，大概可以分成三个步骤：
@@ -868,5 +950,36 @@ pip 第三方包  #默认国外网站
 
 
 
-## 正则表达式
+## numpy
 
+导入数据包`import numpy as np`
+
+```python
+import numpy as np
+
+a = np.array([1,2,3],
+             [2,3,4])
+#需要定义类型
+a = np.array([2,23,4],dtype=int)
+
+#定义全部为0的矩阵,三行四列
+a = np.zeros((3,4),dtype=int64)
+a = np.ones((3,4),dtype=float64)
+
+#定义有序的矩阵
+a = np.arange(10,20,2)  #a = [10 12 14 16 18]
+"""
+a = [[0 1 2 3]
+	 [4 5 6 7]
+	 [8 9 10 11]]
+"""
+a = np.arange(12).reshape((3,4))
+
+"""
+np.linspace(start, stop, num)
+作用：在 start 到 stop 之间，均匀生成 num 个等间距的数，默认返回浮点数数组
+"""
+a = np.linespace(1,10,5) #a = [1. 3.25 5.5 7.75 10.] 
+```
+
+  
